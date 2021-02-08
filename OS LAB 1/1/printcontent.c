@@ -12,28 +12,34 @@ be opened(i.e.the file doesn’t have read permission).You are to use ​open()�
 int main(int argc, char *argv[]){
 
     char *filepath = argv[1];
-    int fd;
-    char buffer[fd];
+    int returnval;
+    char buffer[returnval];
 
     // Check if it exists
-    fd = access(filepath, R_OK);
+    returnval = access(filepath, R_OK);
 
-    // Read and print to the terminal
-    if(fd == 0){
-
-        //Null terminating so it knows where to end
-        buffer[sizeof(buffer)-1] = '\0';
-
-        fd = open(filepath, O_RDONLY);
-        read(fd, buffer, sizeof(buffer)-1);
-        close(fd);
+    // After checking if the file exists it then read and print to the terminal
+    if(returnval == 0){
+        // opens the file in read only mode
+        returnval = open(filepath, O_RDONLY);
+        // read() attemps to read up to count bytes from the file into the buffer. 
+        read(returnval, buffer, sizeof(buffer));
+        // closes the file when done 
+        close(returnval);
         printf("%s\n", buffer);
     } 
+    // AFter checking the file, if some errors exist 
     else {
-        if (errno == ENOENT)
+    
+    // If the file does not exist 
+        if (errno == ENOENT){
             printf("The file %s does not exist\n", filepath);
-        if (errno == EACCES)
+        }
+    // If the file is not accessible to the user
+        if (errno == EACCES){
             printf("The file %s is not accessible\n", filepath);
+        }
     }
+
     return 0;
 }

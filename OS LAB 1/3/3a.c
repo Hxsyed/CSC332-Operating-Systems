@@ -1,6 +1,9 @@
-/* Read the next 75 characters from source.txt and replace each character '5' with 'O' 
-and write to destination.txt. Write "ABC" into the file */
 
+/* Read the next 50 characters from source.txt and replace each character '5' with 'A' 
+
+and write to destination.txt. Write "XYZ" into the file */
+
+ 
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -8,62 +11,71 @@ and write to destination.txt. Write "ABC" into the file */
 #include <unistd.h>
 #include <errno.h>
 
+ 
 int main(int argc, char *argv[]){
 
     char *source = argv[1];
     char *dest = argv[2];
-    int s; // source fd
-    int d; // dest fd
+    int sourcefile; // source fd
+    int destfile; // dest fd
     char buffer[BUFSIZ];
-    int start = 0; // Initial start for loop
-    int end = 76; // 75th character
-    char words[] = { 'A', 'B', 'C'};
+    int start = 0;
+    int end = 50;
+    // a string containing the char's XYZ including '\0'
+    char words[4] = "XYZ";
+
+    // If 3 args are passed then it prompts an error in terminal 
+    if (argc != 3){
+        printf("Usage: ./outfile [source.txt] [destination.txt] \n");
+        return 1;
+    }
 
     // Check for file 
-    s = access(source, R_OK);
+    sourcefile = access(source, R_OK);
 
-    if(s == 0) {
+    if(sourcefile == 0) {
 
         // Open both files
-        s = open(source, O_RDONLY);
-        d = open(dest, O_RDWR|O_CREAT, 0666);
+        sourcefile = open(source, O_RDONLY);
+        destfile = open(dest, O_RDWR|O_CREAT, 666);
 
-        if(s != -1){
+        if(sourcefile != -1){
 
             // Read from source and populate the buffer
-            read(s, buffer, BUFSIZ);
+            read(sourcefile, buffer, BUFSIZ);
 
             // Change the characters 
-            for(int i=start; i<end; i++){
+            for(int i=start; i<=end; i++){
 
-                if(buffer[i] == '5'){
-                    buffer[i] = 'O';
-                }
-
-                // At every 75 iterations, write to file and append counters
-                if(i==end-1){
-                    write(d, buffer, 75);
-                    write(d, words, 3);
-                    start = end;
-                    end = end + 76;
-                }
-               
                 // When it reaches end of file, break out of loop
                  if(end >= 1277) {
                     break;
                 }
-                
+
+                if(buffer[i] == '5'){
+                    buffer[i] = 'A';
+                }
+
+                // At every 50 iterations, write to file and append counters
+
+                if(i==end-1){
+                    write(destfile, buffer, 50);
+                    write(destfile, words, 3);
+                    start = end;
+                    end = end + 50;
+                }
             }
 
-            close(s); close(d);
-        } 
+            close(sourcefile); close(destfile);
+
+        }
+        // prompts an error if file could not be opened
         else {
             printf("Couldnt open in %s", source);
         }
-       
-
-    } else {
-        printf("File access failed");
+    } 
+    // prompts an error if file could not be accessed
+    else {
+        printf("Failed to access %s file", source);
     }
-
 }
