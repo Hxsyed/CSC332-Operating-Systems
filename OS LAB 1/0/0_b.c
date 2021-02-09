@@ -34,10 +34,9 @@ int main(int argc, char *argv[])
     }
     else
     {
+        // open() succeeded, now one can do read operations on the file.
         printf("\n Open() Successful\n");
-        /* open() succeeded, now one can do read operations on the    
-        file opened since we opened it in read-only mode. Also once done    
-        with processing, the file needs to be closed.*/   
+        // Once done with the file, it needs to be closed.*/   
         close(returnval);
     }                                     
      return 0;

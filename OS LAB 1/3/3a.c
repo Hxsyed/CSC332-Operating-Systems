@@ -1,6 +1,5 @@
 
 /* Read the next 50 characters from source.txt and replace each character '5' with 'A' 
-
 and write to destination.txt. Write "XYZ" into the file */
 
  
@@ -25,7 +24,7 @@ int main(int argc, char *argv[]){
     char words[4] = "XYZ";
 
     // If 3 args are passed then it prompts an error in terminal 
-    if (argc != 3){
+    if (argc > 3){
         printf("Usage: ./outfile [source.txt] [destination.txt] \n");
         return 1;
     }
@@ -51,13 +50,12 @@ int main(int argc, char *argv[]){
                  if(end >= 1277) {
                     break;
                 }
-
+                // replacing the character '5' with 'A'
                 if(buffer[i] == '5'){
                     buffer[i] = 'A';
                 }
 
                 // At every 50 iterations, write to file and append counters
-
                 if(i==end-1){
                     write(destfile, buffer, 50);
                     write(destfile, words, 3);
@@ -65,9 +63,7 @@ int main(int argc, char *argv[]){
                     end = end + 50;
                 }
             }
-
             close(sourcefile); close(destfile);
-
         }
         // prompts an error if file could not be opened
         else {
