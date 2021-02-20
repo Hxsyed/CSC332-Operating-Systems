@@ -9,14 +9,15 @@ and write to destination.txt. Write "XYZ" into the file */
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdlib.h>
 
  
 int main(int argc, char *argv[]){
 
     char *source = argv[1];
     char *dest = argv[2];
-    int sourcefile; // source fd
-    int destfile; // dest fd
+    int sourcefile;
+    int destfile;
     char buffer[BUFSIZ];
     int start = 0;
     int end = 50;
@@ -48,7 +49,7 @@ int main(int argc, char *argv[]){
 
                 // When it reaches end of file, break out of loop
                  if(end >= 1277) {
-                    break;
+                    exit(0);
                 }
                 // replacing the character '5' with 'A'
                 if(buffer[i] == '5'){
@@ -63,7 +64,9 @@ int main(int argc, char *argv[]){
                     end = end + 50;
                 }
             }
-            close(sourcefile); close(destfile);
+            // closing the files
+            close(sourcefile); 
+            close(destfile);
         }
         // prompts an error if file could not be opened
         else {
