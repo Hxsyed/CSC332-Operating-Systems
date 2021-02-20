@@ -16,9 +16,7 @@ int main(int argc, char *argv[]){
 
     char *source = argv[1];
     char *dest = argv[2];
-    int sourcefile;
-    int destfile;
-    char buffer[BUFSIZ];
+    char buffer[50];
     int start = 0;
     int end = 50;
     // a string containing the char's XYZ including '\0'
@@ -30,25 +28,49 @@ int main(int argc, char *argv[]){
         return 1;
     }
 
-    // Check for file 
-    sourcefile = access(source, R_OK);
+    // Check if source file exists
+    int sourcefile = access(source, F_OK);
+    // prompts an error if file could not be accessed
+    if (sourcefile != 0)
+    {
+        printf("Failed to access %s file", source);
+        return 0;
+    }
 
-    if(sourcefile == 0) {
+    // Check if dest file exists
+    int destfile = access(source, F_OK);
+    // prompts an error if file could not be accessed
+    if (destfile != 0)
+    {
+        printf("Failed to access %s file", dest);
+        return 0;
+    }
 
-        // Open both files
-        sourcefile = open(source, O_RDONLY);
-        destfile = open(dest, O_RDWR|O_CREAT, 666);
+    int opensource = open(source, O_RDONLY);
+    // prompts an error if  the source file could not be opened
+    if (opensource == -1)
+    {
+        printf("Couldnt open in %s", source);
+        return 1;
+    }
 
-        if(sourcefile != -1){
+    int opendest = open(dest, O_WRONLY | O_CREAT, 0777);
+    // prompts an error if  the destination file could not be opened
+    if (opendest == -1)
+    {
+        printf("Couldnt open in %s", dest);
+        return 1;
+    }
 
-            // Read from source and populate the buffer
-            read(sourcefile, buffer, BUFSIZ);
+        // start copying 
+            read(opensource, buffer, BUFSIZ);
 
             // Change the characters 
             for(int i=start; i<=end; i++){
 
                 // When it reaches end of file, break out of loop
                  if(end >= 1277) {
+                    printf("Task Completed.\n");
                     exit(0);
                 }
                 // replacing the character '5' with 'A'
@@ -58,23 +80,16 @@ int main(int argc, char *argv[]){
 
                 // At every 50 iterations, write to file and append counters
                 if(i==end-1){
-                    write(destfile, buffer, 50);
-                    write(destfile, words, 3);
+                    write(opendest, buffer, 50);
+                    write(opendest, words, 3);
+                    // at the end of 50 chars update start and end to restart
                     start = end;
                     end = end + 50;
                 }
             }
-            // closing the files
-            close(sourcefile); 
-            close(destfile);
-        }
-        // prompts an error if file could not be opened
-        else {
-            printf("Couldnt open in %s", source);
-        }
-    } 
-    // prompts an error if file could not be accessed
-    else {
-        printf("Failed to access %s file", source);
-    }
+    // closing the files
+    close(opensource); 
+    close(opendest);
 }
+
+
