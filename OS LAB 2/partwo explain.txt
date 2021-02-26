@@ -1,0 +1,22 @@
+Execution output:
+
+ 
+
+a: 10, b: 30, process_id: 3785
+a: 35, b: 25, process_id: 3786
+a: 35, b: 40, process_id: 3787                                                                                                                                   
+a: 895, b: 25, process_id: 3788
+
+ 
+
+The flow of the program went something like this.
+First the parent process P was in execution with the values of a = 10 and b = 25.
+When fq=fork() was called a child process Q was forked, but since there are no exec() in the code
+the memory of the process' memory is never replaced and the execution of the parent P continued.
+It performed b=a+b-5 which resulted in b=30 and a=10 stayed as it is.
+Now child Q is executing and it first executed a=a+b which resulted in a=35 and b=25 stayed the same.
+Then Q forked a child R of its own.
+Since there are no waits again the execution continued to if(fr != 0) which is true and it executed b=b+20 which resulted b=40 and a=35.
+Now child R is executing and it finally executed a=(a*b)+30 which resulted in a=895 and b=25. 
+
+ 
