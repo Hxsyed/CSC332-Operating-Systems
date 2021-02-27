@@ -11,13 +11,13 @@
 int main()
 {
     int a = 10, b = 25, fq = 0, fr = 0, status;
-    fq = fork();
-    if (fq == 0)
+    fq = fork(); // fork a child - call it Process Q
+    if (fq == 0) // Child successfully forked
     {
         a = a + b;
         //print values of a, b, and process_id
         printf("a: %d, b: %d, process_id: %d\n", a, b, getpid());
-        fr = fork();
+        fr = fork(); // fork another child - call it Process R
         if (fr != 0)
         {
             b = b + 15;

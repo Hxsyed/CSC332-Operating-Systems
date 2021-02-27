@@ -15,18 +15,20 @@ int main()
     pid_t child;
     int status;
     child = fork();
-    if (child < 0)
+    // prints an error while forking
+    if (child == -1)
     {
         fprintf(stderr, "Error occured while forking\n");
         return -1;
     }
-
+    // On success, the PID of the child process is returned in the
+    // parent, and 0 is returned in the child.
     else if (child == 0)
     {
         printf("I am child one, my pid is: %d\n", getpid());
         exit(0);
     }
-
+    // If fork does not return -1 or 0 then it tells the user that the parent is wating
     else
     {
         printf("Parent is waiting\n");
@@ -35,18 +37,20 @@ int main()
     }
 
     child = fork();
-    if (child < 0)
+    // prints an error while forking
+    if (child == -1)
     {
         fprintf(stderr, "Error occured while forking\n");
         return -1;
     }
-
+    // On success, the PID of the child process is returned in the
+    // parent, and 0 is returned in the child.
     else if (child == 0)
     {
         printf("I am child two, my pid is: %d\n", getpid());
         exit(0);
     }
-
+    // If fork does not return -1 or 0 then it tells the user that the parent is wating
     else
     {
         printf("Parent is waiting\n");
@@ -55,5 +59,4 @@ int main()
     }
 
     return 0;
-
 }
