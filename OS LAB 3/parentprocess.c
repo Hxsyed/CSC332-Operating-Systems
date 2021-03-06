@@ -15,6 +15,7 @@ int main()
   }
   wait(NULL);
 
+  // sleep makes the calling thread sleep until x seconds
   sleep(3);
 
   pd = fork();
