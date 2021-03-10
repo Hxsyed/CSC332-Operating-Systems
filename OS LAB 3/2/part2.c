@@ -12,6 +12,7 @@ int main()
   if (pid == 0)
   {
     printf("Child created! My pid is %d\n", getpid());
+    // By default la is an alias for ls -A.
     char *commands[] = {"ls", "-la", NULL};
     execvp(commands[0], commands);
   }

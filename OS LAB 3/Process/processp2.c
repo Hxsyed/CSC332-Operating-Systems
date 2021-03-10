@@ -61,7 +61,7 @@ int main()
   close(fdSrc);
   close(fdDest1);
   close(fdDest2);
-  printf("Copy succeesful\n");
+  printf("Copy Successful\n");
 
   return 0;
 }

@@ -14,5 +14,7 @@ int main()
   close(fd1);
   close(fd2);
 
+  printf("Sucessfully created destination 1 and 2.txt files with read, write, and execute permissions.\n");
+
   return 0;
 }
