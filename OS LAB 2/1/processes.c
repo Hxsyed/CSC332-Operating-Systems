@@ -12,6 +12,7 @@
  
 int main()
 {
+    // pid_t data type stands for process identification and it is used to represent process ids
     pid_t child;
     int status;
     child = fork();
