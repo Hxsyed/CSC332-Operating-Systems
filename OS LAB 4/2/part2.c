@@ -97,17 +97,13 @@ int main(int argc, char* argv[]){
 				else if(worker == 0){
                     // variables to store the sum and max grades
 					int sum = 0;
-    				int maxGrade = 0;
 
                     // get the sum and max grades
 					for(int i=0; i<studentRow; i++) {
 						sum += grades[i][homework];
-                        if(maxGrade < grades[i][homework]){
-                            maxGrade = grades[i][homework];
-                        }
 					}
 					double average = sum / studentRow;
-					printf("Assignment %d - Average = %f / Max = %d\n", homework+1 ,average, maxGrade);
+					printf("Assignment %d - Average = %f \n", homework+1 ,average);
 					// reset the average
 					average = 0;
 					break;
