@@ -1,70 +1,65 @@
-/*
- * Write a special simple command interpreter that takes command and its arguments.
- * interpreter is a program where the main process creates a child process to execute the
- * command using ​exec()
- * After executing the command, it asks for a new command input (i.e., parent wait for
- * child). The interpreter program will get terminated when the user enters ​ quit​ .
- */
-
-
+#include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <stdbool.h>
-#include <stdlib.h>
 
-int main(int argc, char* argv[]){
-	int child;
-	char* args[1024];
-	char buffer[1024];
-	int count;
+void setScreen();
+
+int main(int argc, char* argv[])
+{
+	int countArguments;
+	char* commandArguments[1024];
+	char buffer[1024]; 
 	
-	while(true){
-		char delimiter[2] = " ";
-		printf("Terminal:$ ");
+	while(true)
+	{
+
+		countArguments = 0; // Resets 'argc' to 0 
+
+		printf("Terminal:$ "); 
 
         /* 
-		 * Reads size0f(buffer)-1 characters from the file stream stdin
          * Stores them in the array buffer
 		 */ 
-		fgets(buffer, sizeof(buffer), stdin);
+		fgets(buffer,sizeof(buffer),stdin);
 
-        /* strtok: Breaks a string into a series of tokens based on a delimiter
-		 * Add each token to the array to populate list of arguments
-		 */
-		args[count] = strtok(buffer, delimiter);
-		while (args[count] != NULL){
-			count++;
-			args[count] = strtok(NULL, delimiter);
-		}
-
-		//remove newline char on final argument
-		args[count-1][strlen(args[count- 1 ]) - 1] = '\0';
-
-		// terminates the program when user quits
-		if (strcmp(args[0], "quit" ) == 0){
-			exit(0);	
+        // strtok() function breaks a string intro a sequence of zero or more nonempty tokens. 
+		commandArguments[countArguments] = strtok(buffer, " ");
+		while (commandArguments[countArguments] != NULL){
+			countArguments++;
+			commandArguments[countArguments] = strtok(NULL, " ");
 		}
 		
-		// prompts an error when child process could not be forked
-		child = fork();
-		if (child == -1){
-			perror("Failed to fork child process");
+		//Remove newline char on final argument at the end
+		commandArguments[countArguments - 1][strlen(commandArguments[countArguments- 1 ]) - 1] = '\0';
+
+        // quitting the program
+		if (strcmp(commandArguments[0], "QUIT" ) == 0){ 
+			break; 
+		}
+
+		int pid = fork();
+		if (pid == -1) //Error-checking
+		{
+			perror("Fork Failed.");
 			exit(-1);
 		}
-		else if(child == 0){
-			execvp(args[0], args);
+		if (pid == 0)
+		{
+			// Check for command in directory
+			execv(commandArguments[0], commandArguments);
 			
-			printf("Invalid Command\n");
+			// Checks outside of directory for command
+			execvp(commandArguments[0], commandArguments);
+			
+			// Check if command is not valid
+			printf("Invalid command. \n");
 			exit(0);
 		}
 		
-		wait(NULL);
-		// Reset for next command
-		count = 0;
-		printf("\n");
+		wait(NULL); //Terminate child process
 	}
 	return 0;
 }
-
