@@ -78,7 +78,7 @@ int main()
   // agent process
   if (fork() == 0)
   {
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 10; i++)
     {
       P(lock);
 
@@ -103,7 +103,7 @@ int main()
         printf("Agent woke up match\n");
         V(matchsemaphore);
       }
-      int remaining = 20 - i;
+      int remaining = 10 - i;
       printf("Remaining to give: %d\n", remaining);
       printf("------------------------------------\n");
       V(lock);

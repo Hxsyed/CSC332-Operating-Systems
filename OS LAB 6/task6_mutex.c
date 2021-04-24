@@ -85,7 +85,7 @@ void *smoker(void *arg)
 
 void *agent()
 {
-  for (int i = 0; i < 20; i++)
+  for (int i = 0; i < 10; i++)
   {
     pthread_mutex_lock(&lock);
 
@@ -103,14 +103,14 @@ void *agent()
     {
       printf("tobacco thread woke up\n");
       pthread_mutex_unlock(&tobaccomutex);
-    }paper
+    }
      // If random == 2 then it wakes up match mutex
     else if (random == 2)
     {
       printf("match thread woke up\n");
       pthread_mutex_unlock(&matchmutex);
     }
-    int remaining = 20 - i;
+    int remaining = 10 - i;
     printf("Remaining to give: %d\n", remaining);
     printf("------------------------------------\n");
     pthread_mutex_unlock(&lock);
