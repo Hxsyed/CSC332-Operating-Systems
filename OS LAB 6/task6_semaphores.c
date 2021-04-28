@@ -27,7 +27,7 @@ int main()
   sem_create(tobaccosemaphore, 0);
   sem_create(matchsemaphore, 0);
 
-  // fork paper process
+  // fork the paper process
   int pid1 = fork();
   if (pid1 == 0)
   {
@@ -43,7 +43,7 @@ int main()
     }
   }
 
-  // fork tobacco process
+  // fork the tobacco process
   int pid2 = fork();
   if (pid2 == 0)
   {
@@ -59,7 +59,7 @@ int main()
     }
   }
 
-  // fork match process
+  // fork the match process
   int pid3 = fork();
   if (pid3 == 0)
   {
@@ -105,13 +105,13 @@ int main()
       }
       int remaining = 10 - i;
       printf("Remaining to give: %d\n", remaining);
-      printf("------------------------------------\n");
+      printf("—————————————————————————————————————————\n");
       V(lock);
       P(agent);
     }
 
-    printf("Smokers are sleeping and waiting for indredients\n");
-    printf("Agent is done giving indredients to smokers\n");
+    printf("Smokers are sleeping and are waiting for their ingredients\n");
+    printf("Agent gave the ingredients to the smokers\n");
 
     P(lock);
     kill(pid1, SIGTERM);
@@ -119,7 +119,7 @@ int main()
     kill(pid3, SIGTERM);
     V(lock);
 
-    printf("Agent canceled all smoker threads\n");
+    printf("Agent has canceled all smoker threads\n");
     exit(0);
   }
 

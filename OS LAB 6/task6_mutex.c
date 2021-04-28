@@ -7,7 +7,9 @@
 void *smoker(void *arg);
 void *agent();
 
+// https://www.man7.org/linux/man-pages/man7/pthreads.7.html
 pthread_t agentthread, paperthread, tobaccothread, matchthread;
+// http://www.skrenta.com/rt/man/pthread_mutex_init.3.html
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t agentmutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t papermutex = PTHREAD_MUTEX_INITIALIZER;
@@ -24,6 +26,7 @@ int main()
   char *matchid = "2";
 
   // Initialize  agennt, paper, tobacco and match mutexes
+  // https://man7.org/linux/man-pages/man3/pthread_mutex_lock.3p.html
   pthread_mutex_lock(&agentmutex);
   pthread_mutex_lock(&papermutex);
   pthread_mutex_lock(&tobaccomutex);
@@ -112,7 +115,7 @@ void *agent()
     }
     int remaining = 10 - i;
     printf("Remaining to give: %d\n", remaining);
-    printf("------------------------------------\n");
+    printf("————————————————————————————————————————————\n");
     pthread_mutex_unlock(&lock);
     pthread_mutex_lock(&agentmutex);
   }
@@ -126,5 +129,5 @@ void *agent()
   pthread_cancel(matchthread);
   pthread_mutex_unlock(&lock);
 
-  printf("Agent canceled all smoker threads\n");
+  printf("Agent has canceled all smoker threads\n");
 }
