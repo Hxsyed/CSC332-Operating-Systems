@@ -47,19 +47,23 @@ int main()
 void *smoker(void *arg)
 {
   const char *turn = (char *)arg;
+  // The C library function int atoi(const char *str) converts the string argument str to an integer (type int).
   int id = atoi(turn);
 
   while (1)
   {
-    // Put smoker to sleep according to turn
+    // put paper to sleep
     if (id == 0)
     {
+      // lock mutex
       pthread_mutex_lock(&papermutex);
     }
+    // put tobacco to sleep
     else if (id == 1)
     {
       pthread_mutex_lock(&tobaccomutex);
     }
+    // put match to sleep
     else if (id == 2)
     {
       pthread_mutex_lock(&matchmutex);
@@ -67,20 +71,22 @@ void *smoker(void *arg)
 
     pthread_mutex_lock(&lock);
 
-    // roll cigarette according to turn
+    // rolling paper
     if (id == 0)
     {
       printf("paper thread rolled a cigarette\n");
     }
+    // rolling tobacco
     else if (id == 1)
     {
       printf("tobacco thread rolled a cigarette\n");
     }
+    // rolling match
     else if (id == 2)
     {
       printf("match thread rolled a cigarette\n");
     }
-
+    // unlock mutex
     pthread_mutex_unlock(&agentmutex);
     pthread_mutex_unlock(&lock);
   }
@@ -124,6 +130,7 @@ void *agent()
   printf("Agent gave the ingredients to smokers\n");
 
   pthread_mutex_lock(&lock);
+  // sends a cancellation request to a thread
   pthread_cancel(paperthread);
   pthread_cancel(tobaccothread);
   pthread_cancel(matchthread);
