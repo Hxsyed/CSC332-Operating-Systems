@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 		printf("Terminal:$ "); 
 
         /* 
-         * Stores them in the array buffer
+         * Stores them in array buffer
 		 */ 
 		fgets(buffer,sizeof(buffer),stdin);
 
